@@ -1,0 +1,14 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Database backups and generated files
+backups/
+*.dump
+*.sql
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
