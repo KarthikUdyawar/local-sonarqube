@@ -2,6 +2,8 @@
 
 A reusable, local-only SonarQube Community Build setup using Docker Compose and PostgreSQL. Intended for local development and connecting the SonarQube for IDE extension in VS Code.
 
+> SonarQube is a trademark of SonarSource SA. This project is community-maintained and is not affiliated with or endorsed by SonarSource.
+
 ## Requirements
 
 - Docker Engine and the Docker Compose plugin
@@ -78,6 +80,27 @@ make backup
 
 This backs up the PostgreSQL database. For a complete recoverable backup, also plan a consistent backup of SonarQube's data/volume state and follow SonarQube's backup/restore documentation. Store backups securely; database dumps may contain project and account metadata.
 
+## Restore
+
+**Destructive:** this replaces the current database contents with the backup. Stop SonarQube, recreate the database, load the dump, then start SonarQube again:
+
+```bash
+docker compose stop sonarqube
+docker compose exec -T db sh -c 'dropdb -U "$POSTGRES_USER" "$POSTGRES_DB" && createdb -U "$POSTGRES_USER" "$POSTGRES_DB"'
+docker compose exec -T db sh -c 'psql -U "$POSTGRES_USER" "$POSTGRES_DB"' < backups/<file>.sql
+docker compose start sonarqube
+```
+
+The first start after a restore can be slow.
+
 ## Troubleshooting
 
 See [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md) and [`docs/SETUP.md`](docs/SETUP.md).
+
+## Contributing
+
+Pull requests are welcome. See [`CONTRIBUTING.md`](CONTRIBUTING.md). Report security issues as described in [`SECURITY.md`](SECURITY.md).
+
+## License
+
+[MIT](LICENSE). SonarQube and PostgreSQL are separate projects with their own licenses.

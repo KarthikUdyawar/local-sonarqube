@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate compose file
+        run: docker compose --env-file .env.example config -q
+
+      - name: Check no .env is committed
+        run: |
+          if git ls-files --error-unmatch .env >/dev/null 2>&1; then
+            echo ".env must not be committed" >&2
+            exit 1
+          fi

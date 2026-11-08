@@ -34,6 +34,17 @@ docker compose logs --tail=150 db
 
 Verify `.env` values and ensure `SONAR_DB_PASSWORD` is set. If the database volume was initialized with different credentials previously, changing `.env` alone does not change the password stored in that existing database.
 
+## SonarQube exits immediately (Linux)
+
+Check the logs for a message like `max virtual memory areas vm.max_map_count ... is too low`. Raise the limits:
+
+```bash
+sudo sysctl -w vm.max_map_count=524288
+sudo sysctl -w fs.file-max=131072
+```
+
+To persist across reboots, put both settings in `/etc/sysctl.d/99-sonarqube.conf`, one `key=value` per line.
+
 ## Reset everything (DESTRUCTIVE)
 
 Only if you intentionally want to delete all SonarQube projects, settings, and database data:

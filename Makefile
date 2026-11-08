@@ -31,7 +31,7 @@ ps: ## Show service/container status
 pull: ## Pull configured container images
 	docker compose pull
 
-config: ## Validate and print resolved Compose configuration (secrets are masked)
+config: ## Validate Compose configuration
 	@docker compose config --quiet && echo "Compose configuration is valid."
 
 doctor: ## Check local prerequisites and configuration

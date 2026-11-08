@@ -2,7 +2,7 @@ name: local-sonarqube
 
 services:
   sonarqube:
-    image: sonarqube:community
+    image: sonarqube:26.10.0.133078-community
     container_name: local-sonarqube
     restart: unless-stopped
     depends_on:
